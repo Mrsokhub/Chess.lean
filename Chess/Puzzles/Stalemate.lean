@@ -91,6 +91,9 @@ theorem true_win_with_pawn :
       ╚════════════════╝ := by
   with_panel_widgets [ForcedWinWidget]
   opponent_move
-  all_goals (move "Qg7"; checkmate)
+  all_goals first
+    | (move "Qg7"; checkmate)
+    | (simp; move "Qg7"; checkmate)
+    | exact ne_of_beq_false rfl
 
 #print axioms true_win_with_pawn
