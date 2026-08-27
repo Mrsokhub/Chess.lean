@@ -22,6 +22,7 @@ theorem cross_check_real_mate :
       ║░░▓▓░░▓▓░░▓▓░░▓▓║
       ║▓▓░░▓▓░░▓▓░░▓▓░░║
       ╚════════════════╝ := by
+  with_panel_widgets [ForcedWinWidget]
   move "Qg7"
   checkmate
 
@@ -43,6 +44,28 @@ theorem false_win_on_stalemate :
       ║░░▓▓░░▓▓░░▓▓░░▓▓║
       ║▓▓░░▓▓░░▓▓░░▓▓░░║
       ╚════════════════╝ := by
+  with_panel_widgets [ForcedWinWidget]
   opponent_move
 
 #print axioms false_win_on_stalemate
+
+
+-- ③ 可达性：白方从①那个局面走一步 Qg6，就落进②那个逼和局面。
+-- 注意：这条定理的陈述是真的，假的是这条证明路径。
+theorem reachable_from_anchor :
+    ForcedWin .white
+      ╔════════════════╗
+      ║░░▓▓░░▓▓░░▓▓░░♚]║
+      ║▓▓░░▓▓░░▓▓♔}▓▓░░║
+      ║░░▓▓░░▓▓░░▓▓░░▓▓║
+      ║▓▓░░▓▓░░▓▓░░♕]░░║
+      ║░░▓▓░░▓▓░░▓▓░░▓▓║
+      ║▓▓░░▓▓░░▓▓░░▓▓░░║
+      ║░░▓▓░░▓▓░░▓▓░░▓▓║
+      ║▓▓░░▓▓░░▓▓░░▓▓░░║
+      ╚════════════════╝ := by
+  with_panel_widgets [ForcedWinWidget]
+  move "Qg6"
+  opponent_move
+
+#print axioms reachable_from_anchor
