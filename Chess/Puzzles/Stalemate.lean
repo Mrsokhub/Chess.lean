@@ -69,3 +69,28 @@ theorem reachable_from_anchor :
   opponent_move
 
 #print axioms reachable_from_anchor
+
+
+-- ④ 控制变量：把逼和局面加一个黑兵 a7，其它一格不动。
+--    FEN: 7k/p4K2/6Q1/8/8/8/8/8 b - - 1 1
+--    黑方从 0 种应手变成【恰好 2 种】(a6 / a5)，两条都被 Qg7# 杀死。
+--    所以这个局面白方是【真的】必胜 —— 旧定义在这里给的答案是对的。
+--    意义：漏洞只在"对手 0 种合法走法"这个边界处发生。
+--    分支：main（旧定义）
+theorem true_win_with_pawn :
+    ForcedWin .white
+      ╔════════════════╗
+      ║░░▓▓░░▓▓░░▓▓░░♚}║
+      ║♟]░░▓▓░░▓▓♔]▓▓░░║
+      ║░░▓▓░░▓▓░░▓▓♕]▓▓║
+      ║▓▓░░▓▓░░▓▓░░▓▓░░║
+      ║░░▓▓░░▓▓░░▓▓░░▓▓║
+      ║▓▓░░▓▓░░▓▓░░▓▓░░║
+      ║░░▓▓░░▓▓░░▓▓░░▓▓║
+      ║▓▓░░▓▓░░▓▓░░▓▓░░║
+      ╚════════════════╝ := by
+  with_panel_widgets [ForcedWinWidget]
+  opponent_move
+  all_goals (move "Qg7"; checkmate)
+
+#print axioms true_win_with_pawn
