@@ -97,3 +97,71 @@ theorem true_win_with_pawn :
     | exact ne_of_beq_false rfl
 
 #print axioms true_win_with_pawn
+
+
+-- ⑤ Qh2 陷阱：
+--    白棋若改走 1.Qh2+，黑方有 4 种应手，白棋只能一步杀掉其中 2 条：
+--        1...Ka3 → Ra5#      ✅
+--        1...Kb1 → Re1#      ✅
+--        1...Ka1 → 无一步杀   ❌
+--        1...Rb2 → 无一步杀   ❌
+--    所以 "1.Qh2+ Ka3 2.Ra5#" 这条答案本身每一步合法、终局确实将杀，
+--    但它没有覆盖黑方的全部应手。
+--
+--    ⚠️ 这里被否掉的是“这个两步杀答案”，不是 Qh2 这步棋本身。
+--       ForcedWin 不限深度，剩下两个 goal 只是不能用一步 move + checkmate 关掉。
+--    分支：main
+theorem qh2_trap :
+    ForcedWin .white
+      ╔════════════════╗
+      ║░░▓▓░░▓▓░░▓▓░░♕]║
+      ║♟]░░▓▓░░▓▓░░▓▓░░║
+      ║♔}▓▓♘]▓▓░░▓▓░░▓▓║
+      ║▓▓░░▓▓░░♖]░░▓▓░░║
+      ║░░▓▓░░▓▓░░▓▓░░▓▓║
+      ║▓▓♜]▓▓░░▓▓░░▓▓░░║
+      ║♚]▓▓░░▓▓░░▓▓░░▓▓║
+      ║▓▓░░▓▓░░▓▓░░▓▓░░║
+      ╚════════════════╝ := by
+  with_panel_widgets [ForcedWinWidget]
+  move "Qh2"
+  opponent_move
+  rotate_left
+  move "Ra5"
+  checkmate
+  rotate_left
+  move "Re1"
+  checkmate
+
+
+-- ⑥ Re2 扇出正面证明：
+--    同一个棋盘 A，白方走正确首着 1.Re2+。
+--    黑方恰好 3 种应手：
+--      1...Ka3 → Qa1#
+--      1...Kb1 → Qh1#
+--      1...Rb2 → Q×b2#
+--
+--    与 qh2_trap 对照：
+--    Qh2+ 后有 4 个分支且给定两步答案漏掉 2 条；
+--    Re2+ 后 3 个分支可以全部由 Lean 关闭。
+theorem win_via_Re2 :
+    ForcedWin .white
+      ╔════════════════╗
+      ║░░▓▓░░▓▓░░▓▓░░♕]║
+      ║♟]░░▓▓░░▓▓░░▓▓░░║
+      ║♔}▓▓♘]▓▓░░▓▓░░▓▓║
+      ║▓▓░░▓▓░░♖]░░▓▓░░║
+      ║░░▓▓░░▓▓░░▓▓░░▓▓║
+      ║▓▓♜]▓▓░░▓▓░░▓▓░░║
+      ║♚]▓▓░░▓▓░░▓▓░░▓▓║
+      ║▓▓░░▓▓░░▓▓░░▓▓░░║
+      ╚════════════════╝ := by
+  with_panel_widgets [ForcedWinWidget]
+  move "Re2"
+  opponent_move
+  all_goals first
+    | (move "Qa1"; checkmate)
+    | (move "Qh1"; checkmate)
+    | (move "Q×b2"; checkmate)
+
+#print axioms win_via_Re2
