@@ -152,3 +152,53 @@ main 上成功证明的 5 个定理：
 - 从棋规层独立形式化“逼和不是将死”的引理
 - 汇总更多测试局面
 - 进一步整理自动分类与实验表格
+
+### Day3 formal lemmas
+
+- stalemate_no_legal_moves
+- stalemate_not_checkmate
+- mate_no_legal_moves
+- mate_is_checkmate
+- stalemate_ne_checkmate
+- stalemate_vacuous_hypothesis
+
+逼和与将死都可能具有 0 个合法着法；区别在于是否被将军。
+旧 `ForcedWin.Opponent` 的全称前提在空 `valid_moves` 上会发生 vacuous truth。
+
+### axioms audit
+
+`Stalemate.lean` + `Lemmas.lean` 共 11 条成功 theorem：
+全部 only `[propext]`。
+
+无 `sorryAx`。
+无 `Lean.ofReduceBool`。
+
+### DeepSeek controlled test
+
+12 个局面，每题新对话，第一次回答原样保存。
+
+最终统计：
+
+- 正确：3/12 = 25.0%
+- S1：1/12 = 8.3%
+- S2：0/12 = 0%
+- C：7/12 = 58.3%
+- T：1/12 = 8.3%
+
+语法/格式错误与棋理错误不能混成一个错误率。
+
+第03题 `Ra5`：
+Lean 展开得到 2 个未完成分支；
+python-chess 独立验证 `Kb1` / `Ra3` 后均没有 mate-in-1。
+
+第04题 `Qxa1`：
+棋理正确并能将杀，但规范 SAN 应为 `Qa1`，因此归 S1。
+
+第07题 `exf1=Q`：
+标准 SAN 合法，但不是将杀，因此主分类为 C。
+
+第11题 `Qf7`：
+独立强制搜索 2931 nodes，四步内强制将杀为 FALSE。
+
+第12题 `Qb2`：
+穷举 `ALL_MATE_IN_1_MOVES=[]`，正确回答应为 `NONE`。

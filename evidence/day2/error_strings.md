@@ -64,4 +64,46 @@
 - `failed to parse move`：着法字符串解析失败
 - `valid_moves ... ≠ ∅`：PR #10 新增非空性条件未满足
 - 成功定理应为 `[propext]`
-- 最终 Lean 文件不得残留 `sorry`git status --short
+- 最终 Lean 文件不得残留 `sorry`
+
+---
+
+## Day3 实际遇到的错误类型
+
+Day3 第6段 `Chess/Puzzles/LLMTest.lean` 原始答案进入 Lean 后，实际遇到以下错误类型。
+
+### `IsCheckmate ... is false`
+
+真实原文摘要：
+
+`error: tactic 'decide' proved that the proposition ... IsCheckmate ... is false`
+
+对应题号：
+
+- 02：`Qg6`
+- 05：`Qb2`
+- 10：`Qh4`
+
+### `failed to make move`
+
+真实原文摘要：
+
+`error: failed to make move`
+
+对应题号：
+
+- 06：`Qxa1`
+- 07：`exf1=Q`
+
+### `unsolved goals`
+
+真实原文摘要：
+
+`error: unsolved goals`
+
+对应题号：
+
+- 03：`Ra5` 后 `opponent_move` 留下 2 个 goals
+- 11：`Qf7` 后 `opponent_move` 留下 36 个 goals
+
+备注：Day3 没有伪造或记录不存在的 `failed to parse move`。
